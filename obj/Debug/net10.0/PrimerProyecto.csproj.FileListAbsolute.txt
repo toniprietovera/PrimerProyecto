@@ -1,0 +1,14 @@
+C:\Users\priet\PrimerProyecto\bin\Debug\net10.0\PrimerProyecto.exe
+C:\Users\priet\PrimerProyecto\bin\Debug\net10.0\PrimerProyecto.deps.json
+C:\Users\priet\PrimerProyecto\bin\Debug\net10.0\PrimerProyecto.runtimeconfig.json
+C:\Users\priet\PrimerProyecto\bin\Debug\net10.0\PrimerProyecto.dll
+C:\Users\priet\PrimerProyecto\bin\Debug\net10.0\PrimerProyecto.pdb
+C:\Users\priet\PrimerProyecto\obj\Debug\net10.0\PrimerProyecto.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\priet\PrimerProyecto\obj\Debug\net10.0\PrimerProyecto.AssemblyInfoInputs.cache
+C:\Users\priet\PrimerProyecto\obj\Debug\net10.0\PrimerProyecto.AssemblyInfo.cs
+C:\Users\priet\PrimerProyecto\obj\Debug\net10.0\PrimerProyecto.csproj.CoreCompileInputs.cache
+C:\Users\priet\PrimerProyecto\obj\Debug\net10.0\PrimerProyecto.dll
+C:\Users\priet\PrimerProyecto\obj\Debug\net10.0\refint\PrimerProyecto.dll
+C:\Users\priet\PrimerProyecto\obj\Debug\net10.0\PrimerProyecto.pdb
+C:\Users\priet\PrimerProyecto\obj\Debug\net10.0\PrimerProyecto.genruntimeconfig.cache
+C:\Users\priet\PrimerProyecto\obj\Debug\net10.0\ref\PrimerProyecto.dll
