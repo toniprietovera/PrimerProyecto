@@ -1,2 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using PrimerProyecto.Controllers;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var controller = new TareasController();
+        controller.RunDemo();
+    }
+}
