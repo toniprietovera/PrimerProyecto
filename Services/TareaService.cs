@@ -6,16 +6,24 @@ namespace PrimerProyecto.Services
 {
     public class TareaService
     {
-        private readonly TareaRepository _repo = new();
-        public List<Tarea> GetAll() => _repo.GetAll();
+        private readonly TareaRepository _repo;
+        public TareaService(TareaRepository repo) // Inyección de dependencias
+        {
+            _repo = repo;
+        }
+        public PaginacionResult<Tarea> GetAll(int usuarioId, PaginacionParams paginacion)
+        {
+            return _repo.GetAll(usuarioId, paginacion);
+        }
         public Tarea? FindById(int id) => _repo.FindById(id);
-        public Tarea Crear(TareaDTO dto)
+        public Tarea Crear(TareaDTO dto, int usuarioId)
         {
             var tarea = new Tarea
             {
                 Titulo = dto.Titulo,
                 Descripcion = dto.Descripcion,
-                Completada = dto.Completada
+                Completada = dto.Completada,
+                UsuarioId = usuarioId
             };
             return _repo.Create(tarea);
         }
@@ -28,7 +36,7 @@ namespace PrimerProyecto.Services
             tarea.Titulo = dto.Titulo;
             tarea.Descripcion = dto.Descripcion;
             tarea.Completada = dto.Completada;
-            return true;
+            return _repo.Update(tarea);
         }
     }
 }

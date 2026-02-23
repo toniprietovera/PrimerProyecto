@@ -1,34 +1,71 @@
 using PrimerProyecto.Models;
-using System.Collections.Generic;
-using System.Linq;
+using PrimerProyecto.DTOs;
+using Microsoft.Extensions.Validation;
 
 namespace PrimerProyecto.Repositories
 {
     public class TareaRepository
     {
-        private readonly List<Tarea> _tareas = new();
-        private int _nextId = 1;
+        private readonly AppDbContext _context;
 
-        public List<Tarea> GetAll() => _tareas;
-
-        public Tarea? FindById(int id) => _tareas.FirstOrDefault(t => t.Id == id);
-
-        public Tarea Create(Tarea tarea)
+        public TareaRepository(AppDbContext context) // Inyección de dependencias
         {
-            tarea.Id = _nextId++;
-            _tareas.Add(tarea);
-            return tarea;
+            _context = context;
         }
 
-        public bool Remove(int id) => _tareas.RemoveAll(t => t.Id == id) > 0;
+        //public List<Tarea> GetAll(int usuarioId) => _context.Tareas.Where(t => t.UsuarioId == usuarioId).ToList();
+        public PaginacionResult<Tarea> GetAll(int usuarioId, PaginacionParams paginacion)
+        {
+            var query = _context.Tareas.Where(t => t.UsuarioId == usuarioId);
+
+            if (paginacion.Completada.HasValue)
+            {
+                query = query.Where(t => t.Completada == paginacion.Completada.Value);   
+            }
+
+            if (!string.IsNullOrEmpty(paginacion.BuscarTexto))
+            {
+                query = query.Where(t => t.Titulo.Contains(paginacion.BuscarTexto) || t.Descripcion.Contains(paginacion.BuscarTexto));
+            }
+
+            var totalRegistros = query.Count();
+            var tamanoPagina = paginacion.GetTamanoPagina();
+            var totalPaginas = (int)Math.Ceiling(totalRegistros / (double)tamanoPagina);
+
+            var datos = query
+                .OrderByDescending(t => t.FechaCreacion)
+                .Skip((paginacion.Pagina - 1) * tamanoPagina)
+                .Take(tamanoPagina)
+                .ToList();
+
+            return new PaginacionResult<Tarea>
+            {
+                Datos = datos,
+                PaginaActual = paginacion.Pagina,
+                TamanoPagina = tamanoPagina,
+                TotalRegistros = totalRegistros,
+                TotalPaginas = totalPaginas
+            };
+        }
+        public Tarea? FindById(int id) => _context.Tareas.Find(id);
+        public Tarea Create(Tarea tarea)
+        {
+            _context.Tareas.Add(tarea);
+            _context.SaveChanges();
+            return tarea;
+        }
+        public bool Remove(int id)
+        {
+            var tarea = FindById(id);
+            if (tarea == null) return false;
+            _context.Tareas.Remove(tarea);
+            _context.SaveChanges();
+            return true;
+        }
         public bool Update(Tarea tarea)
         {
-            var existing = FindById(tarea.Id);
-            if (existing == null) return false;
-
-            existing.Titulo = tarea.Titulo;
-            existing.Descripcion = tarea.Descripcion;
-            existing.Completada = tarea.Completada;
+            _context.Tareas.Update(tarea);
+            _context.SaveChanges();
             return true;
         }
     }
