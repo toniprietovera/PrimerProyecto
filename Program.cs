@@ -19,6 +19,7 @@ builder.Services.AddScoped<PrimerProyecto.Repositories.TareaRepository>();
 builder.Services.AddScoped<PrimerProyecto.Repositories.UsuarioRepository>();
 builder.Services.AddScoped<PrimerProyecto.Services.AuthService>();
 builder.Services.AddScoped<PrimerProyecto.Services.JwtService>();
+builder.Services.AddScoped<PrimerProyecto.Services.EmailService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -67,9 +68,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddAuthorization();
 
-var app = builder.Build();
-app.UseExceptionHandler(_ => {});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReact", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
+var app = builder.Build();
+app.UseExceptionHandler(_ => { });
+app.UseCors("AllowReact");
 app.UseAuthentication();
 app.UseAuthorization();
 

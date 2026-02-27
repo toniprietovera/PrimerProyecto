@@ -18,13 +18,13 @@ namespace PrimerProyecto.Controllers
         }
 
         [HttpPost("registro")]
-        public IActionResult Registro([FromBody] RegistroDTO dto)
+        public async Task<IActionResult> Registro([FromBody] RegistroDTO dto)
         {
-            var usuario = _authService.Registrar(dto);
+            var usuario = await _authService.Registrar(dto);
             if (usuario == null)
                 return BadRequest(new { message = "El email ya está registrado" });
 
-            return Ok(new { message = "Usuario registrado correctamente" });
+            return Ok(new { message = "Usuario registrado. Revisa tu email para confirmar tu cuenta." });
         }
 
         [HttpPost("login")]
@@ -36,6 +36,16 @@ namespace PrimerProyecto.Controllers
 
             var token = _jwtService.GenerarToken(usuario);
             return Ok(new { token });
+        }
+        [HttpGet("confirmar-email")]
+        public IActionResult ConfirmarEmail([FromQuery] string token)
+        {
+            var usuario = _authService.ConfirmarEmail(token);
+
+            if (usuario == null)
+                return BadRequest(new { message = "Token inválido o expirado" });
+
+            return Ok(new { message = "Email confirmado correctamente. Ya puedes iniciar sesión." });
         }
     }
 }

@@ -25,7 +25,9 @@ namespace PrimerProyecto.Repositories
 
             if (!string.IsNullOrEmpty(paginacion.BuscarTexto))
             {
-                query = query.Where(t => t.Titulo.Contains(paginacion.BuscarTexto) || t.Descripcion.Contains(paginacion.BuscarTexto));
+                query = query.Where(t => 
+                t.Titulo.Contains(paginacion.BuscarTexto) || 
+                t.Descripcion.Contains(paginacion.BuscarTexto));
             }
 
             var totalRegistros = query.Count();

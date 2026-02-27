@@ -32,5 +32,15 @@ namespace PrimerProyecto.Repositories
             _context.SaveChanges();
             return usuario;
         }
+        public Usuario? FindByToken(string token)
+        {
+            return _context.Usuarios.FirstOrDefault(u => u.TokenConfirmacion == token);
+        }
+        public Usuario Update(Usuario usuario)
+        {
+            _context.Usuarios.Update(usuario);
+            _context.SaveChanges();
+            return usuario;
+        }
     }
 }
